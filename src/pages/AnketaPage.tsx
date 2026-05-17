@@ -13,6 +13,7 @@ const QUESTIONS = [
   { id: 'character', label: 'Характер', placeholder: 'Опишите ваш характер, темперамент, особенности личности...', type: 'textarea' },
   { id: 'occupation', label: 'Род деятельности', placeholder: 'Чем занимаетесь? Профессия, сфера работы...', type: 'textarea' },
   { id: 'biography', label: 'Биография', placeholder: 'Расскажите о себе: откуда вы, как прошли ваши годы, ключевые события жизни...', type: 'textarea' },
+  { id: 'baggage', label: 'Багаж', placeholder: 'Опишите ваш багаж: навыки, знания, опыт, который вы несёте с собой...', type: 'textarea' },
 ]
 
 interface Message {
