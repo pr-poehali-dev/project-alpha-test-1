@@ -96,7 +96,7 @@ export default function DashboardPage() {
   }
 
   const tabs = [
-    { id: 'anketa' as Tab, label: 'Моя анкета', icon: 'FileText' },
+    { id: 'anketa' as Tab, label: 'Моё досье', icon: 'FileText' },
     { id: 'chat' as Tab, label: 'Чат', icon: 'MessageCircle' },
     { id: 'requests' as Tab, label: 'Запросы', icon: 'Send' },
   ]
