@@ -33,11 +33,24 @@ const INITIAL_MESSAGES: Message[] = [
   },
 ]
 
+const STORAGE_KEY = 'anketa_answers'
+const STORAGE_SUBMITTED_KEY = 'anketa_submitted'
+
 export default function AnketaPage() {
-  const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [answers, setAnswers] = useState<Record<string, string>>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      return saved ? JSON.parse(saved) : {}
+    } catch {
+      return {}
+    }
+  })
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES)
   const [newMessage, setNewMessage] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(() => {
+    return localStorage.getItem(STORAGE_SUBMITTED_KEY) === 'true'
+  })
+  const [savedField, setSavedField] = useState<string | null>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -45,7 +58,18 @@ export default function AnketaPage() {
   }, [messages])
 
   const handleAnswer = (id: string, value: string) => {
-    setAnswers(prev => ({ ...prev, [id]: value }))
+    setAnswers(prev => {
+      const next = { ...prev, [id]: value }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+      return next
+    })
+  }
+
+  const handleBlur = (id: string) => {
+    if (answers[id]?.trim()) {
+      setSavedField(id)
+      setTimeout(() => setSavedField(null), 2000)
+    }
   }
 
   const sendMessage = () => {
@@ -71,6 +95,7 @@ export default function AnketaPage() {
 
   const handleSubmit = () => {
     setSubmitted(true)
+    localStorage.setItem(STORAGE_SUBMITTED_KEY, 'true')
     const now = new Date()
     const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`
     setMessages(prev => [
@@ -133,15 +158,29 @@ export default function AnketaPage() {
                     {i + 1}
                   </span>
                   {q.label}
-                  {answers[q.id]?.trim() && (
-                    <Icon name="CheckCircle" size={14} className="text-[#FF4D00] ml-auto" />
-                  )}
+                  <span className="ml-auto flex items-center gap-1">
+                    {savedField === q.id && (
+                      <motion.span
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        className="text-xs text-green-400 flex items-center gap-1"
+                      >
+                        <Icon name="Check" size={12} />
+                        Сохранено
+                      </motion.span>
+                    )}
+                    {answers[q.id]?.trim() && savedField !== q.id && (
+                      <Icon name="CheckCircle" size={14} className="text-[#FF4D00]" />
+                    )}
+                  </span>
                 </label>
                 {q.type === 'input' ? (
                   <Input
                     placeholder={q.placeholder}
                     value={answers[q.id] || ''}
                     onChange={e => handleAnswer(q.id, e.target.value)}
+                    onBlur={() => handleBlur(q.id)}
                     disabled={submitted}
                     className="bg-white/5 border-white/10 text-white placeholder:text-neutral-600 focus:border-[#FF4D00] focus:ring-0 transition-colors"
                   />
@@ -150,6 +189,7 @@ export default function AnketaPage() {
                     placeholder={q.placeholder}
                     value={answers[q.id] || ''}
                     onChange={e => handleAnswer(q.id, e.target.value)}
+                    onBlur={() => handleBlur(q.id)}
                     disabled={submitted}
                     rows={3}
                     className="bg-white/5 border-white/10 text-white placeholder:text-neutral-600 focus:border-[#FF4D00] focus:ring-0 transition-colors resize-none"
