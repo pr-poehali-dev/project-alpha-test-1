@@ -15,7 +15,7 @@ const QUESTIONS = [
   { id: 'occupation', label: 'Род деятельности', placeholder: 'Чем занимаетесь? Профессия, сфера работы...', type: 'textarea' },
   { id: 'workplace', label: 'Место работы', placeholder: 'Выберите модуль, который будет соответствовать вашему роду деятельности', type: 'input' },
   { id: 'biography', label: 'Биография', placeholder: 'Расскажите о себе: откуда вы, как прошли ваши годы, ключевые события жизни...', type: 'textarea' },
-  { id: 'baggage', label: 'Багаж', placeholder: 'Опишите ваш багаж: навыки, знания, опыт, который вы несёте с собой...', type: 'textarea' },
+  { id: 'baggage', label: 'Багаж', placeholder: 'Например: ноутбук, личные вещи, медикаменты, инструменты...', type: 'textarea' },
 ]
 
 interface Message {
