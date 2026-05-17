@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import Icon from '@/components/ui/icon'
 import { STORAGE_KEY, STORAGE_SUBMITTED_KEY, STORAGE_CODE_KEY, generateCode, isSubmitted } from '@/lib/employee'
+import { registerEmployee } from '@/lib/admin'
 
 const QUESTIONS = [
   { id: 'name', label: 'ФИО', placeholder: 'Иванов Иван Иванович', type: 'input' },
@@ -104,6 +105,7 @@ export default function AnketaPage() {
     const code = generateCode()
     localStorage.setItem(STORAGE_SUBMITTED_KEY, 'true')
     localStorage.setItem(STORAGE_CODE_KEY, code)
+    registerEmployee(code, answers)
     setSubmitted(true)
     setEmployeeCode(code)
     const now = new Date()
