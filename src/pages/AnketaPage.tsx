@@ -8,11 +8,11 @@ import Icon from '@/components/ui/icon'
 
 const QUESTIONS = [
   { id: 'name', label: 'ФИО', placeholder: 'Иванов Иван Иванович', type: 'input' },
-  { id: 'age', label: 'Возраст', placeholder: 'Например: 28', type: 'input' },
-  { id: 'experience', label: 'Опыт работы', placeholder: 'Опишите ваш профессиональный опыт...', type: 'textarea' },
-  { id: 'motivation', label: 'Мотивация', placeholder: 'Почему хотите участвовать? Что вас привлекает?', type: 'textarea' },
-  { id: 'strengths', label: 'Сильные стороны', placeholder: 'Какие качества помогут вам в этой роли?', type: 'textarea' },
-  { id: 'goals', label: 'Цели на год', placeholder: 'Что планируете достичь за ближайший год?', type: 'textarea' },
+  { id: 'age', label: 'Возраст, пол, рост, вес', placeholder: 'Например: 28 лет, мужской, 180 см, 75 кг', type: 'input' },
+  { id: 'nationality', label: 'Национальность', placeholder: 'Укажите вашу национальность', type: 'input' },
+  { id: 'character', label: 'Характер', placeholder: 'Опишите ваш характер, темперамент, особенности личности...', type: 'textarea' },
+  { id: 'occupation', label: 'Род деятельности', placeholder: 'Чем занимаетесь? Профессия, сфера работы...', type: 'textarea' },
+  { id: 'biography', label: 'Биография', placeholder: 'Расскажите о себе: откуда вы, как прошли ваши годы, ключевые события жизни...', type: 'textarea' },
 ]
 
 interface Message {
