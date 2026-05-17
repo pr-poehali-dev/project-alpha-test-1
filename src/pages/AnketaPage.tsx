@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import Icon from '@/components/ui/icon'
+import { STORAGE_KEY, STORAGE_SUBMITTED_KEY, STORAGE_CODE_KEY, generateCode, isSubmitted } from '@/lib/employee'
 
 const QUESTIONS = [
   { id: 'name', label: 'ФИО', placeholder: 'Иванов Иван Иванович', type: 'input' },
@@ -34,10 +36,15 @@ const INITIAL_MESSAGES: Message[] = [
   },
 ]
 
-const STORAGE_KEY = 'anketa_answers'
-const STORAGE_SUBMITTED_KEY = 'anketa_submitted'
-
 export default function AnketaPage() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isSubmitted()) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [navigate])
+
   const [answers, setAnswers] = useState<Record<string, string>>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
@@ -48,9 +55,8 @@ export default function AnketaPage() {
   })
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES)
   const [newMessage, setNewMessage] = useState('')
-  const [submitted, setSubmitted] = useState(() => {
-    return localStorage.getItem(STORAGE_SUBMITTED_KEY) === 'true'
-  })
+  const [submitted, setSubmitted] = useState(false)
+  const [employeeCode, setEmployeeCode] = useState<string | null>(null)
   const [savedField, setSavedField] = useState<string | null>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
@@ -95,18 +101,16 @@ export default function AnketaPage() {
   const progress = Math.round((filledCount / QUESTIONS.length) * 100)
 
   const handleSubmit = () => {
-    setSubmitted(true)
+    const code = generateCode()
     localStorage.setItem(STORAGE_SUBMITTED_KEY, 'true')
+    localStorage.setItem(STORAGE_CODE_KEY, code)
+    setSubmitted(true)
+    setEmployeeCode(code)
     const now = new Date()
     const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`
     setMessages(prev => [
       ...prev,
-      {
-        id: Date.now(),
-        author: 'applicant',
-        text: 'Анкета отправлена на проверку.',
-        time,
-      },
+      { id: Date.now(), author: 'applicant', text: 'Анкета отправлена на проверку.', time },
     ])
   }
 
@@ -203,13 +207,31 @@ export default function AnketaPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="pt-4"
+              className="pt-4 pb-12"
             >
-              {submitted ? (
-                <div className="flex items-center gap-2 text-[#FF4D00]">
-                  <Icon name="CheckCircle" size={18} />
-                  <span className="font-medium">Анкета отправлена на проверку</span>
-                </div>
+              {submitted && employeeCode ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-4 bg-white/5 border border-white/10 rounded-xl p-6"
+                >
+                  <div className="flex items-center gap-2 text-green-400">
+                    <Icon name="CheckCircle" size={18} />
+                    <span className="font-medium">Анкета отправлена!</span>
+                  </div>
+                  <p className="text-sm text-neutral-400">Сохраните ваш код доступа — он понадобится для входа в систему.</p>
+                  <div className="bg-black border border-[#FF4D00]/40 rounded-lg px-5 py-3 flex items-center justify-between">
+                    <span className="font-mono text-2xl tracking-widest text-[#FF4D00] font-bold">{employeeCode}</span>
+                    <Icon name="Key" size={18} className="text-[#FF4D00]" />
+                  </div>
+                  <Button
+                    onClick={() => navigate('/dashboard')}
+                    className="w-full bg-[#FF4D00] hover:bg-[#e04400] text-white border-0"
+                    size="lg"
+                  >
+                    Войти в систему
+                  </Button>
+                </motion.div>
               ) : (
                 <Button
                   onClick={handleSubmit}

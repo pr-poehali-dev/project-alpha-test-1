@@ -2,9 +2,17 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
 import type { SectionProps } from "@/types"
+import { isSubmitted } from "@/lib/employee"
 
 export default function Section({ id, title, subtitle, content, isActive, showButton, buttonText }: SectionProps) {
   const navigate = useNavigate()
+  const handleButtonClick = () => {
+    if (isSubmitted()) {
+      navigate('/login')
+    } else {
+      navigate('/anketa')
+    }
+  }
   return (
     <section id={id} className="relative h-screen w-full snap-start flex flex-col justify-center p-8 md:p-16 lg:p-24">
       {subtitle && (
@@ -45,7 +53,7 @@ export default function Section({ id, title, subtitle, content, isActive, showBu
           <Button
             variant="outline"
             size="lg"
-            onClick={() => navigate('/anketa')}
+            onClick={handleButtonClick}
             className="text-[#FF4D00] bg-transparent border-[#FF4D00] hover:bg-[#FF4D00] hover:text-black transition-colors"
           >
             {buttonText}
