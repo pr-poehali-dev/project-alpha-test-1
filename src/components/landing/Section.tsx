@@ -48,7 +48,7 @@ export default function Section({ id, title, subtitle, content, isActive, showBu
           initial={{ opacity: 0, y: 20 }}
           animate={isActive ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-12 md:mt-16"
+          className="mt-12 md:mt-16 flex items-center gap-4"
         >
           <Button
             variant="outline"
@@ -57,6 +57,14 @@ export default function Section({ id, title, subtitle, content, isActive, showBu
             className="text-[#FF4D00] bg-transparent border-[#FF4D00] hover:bg-[#FF4D00] hover:text-black transition-colors"
           >
             {buttonText}
+          </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={() => navigate('/admin/login')}
+            className="text-neutral-500 hover:text-neutral-300 hover:bg-white/5 transition-colors"
+          >
+            Администратор
           </Button>
         </motion.div>
       )}
