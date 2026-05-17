@@ -1,12 +1,9 @@
-import { Badge } from "@/components/ui/badge"
-
 export const sections = [
   {
     id: 'hero',
-    subtitle: <Badge variant="outline" className="text-white border-white">Проверка анкет</Badge>,
     title: 'Терминал сотрудника колонии "Заря-1"',
     showButton: true,
-    buttonText: 'Начать проверку'
+    buttonText: 'Войти'
   },
   {
     id: 'about',
