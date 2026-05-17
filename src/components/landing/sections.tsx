@@ -4,7 +4,7 @@ export const sections = [
   {
     id: 'hero',
     subtitle: <Badge variant="outline" className="text-white border-white">Проверка анкет</Badge>,
-    title: "Анкеты проверяются точно и быстро.",
+    title: 'Терминал регистрации сотрудников колонии "Заря-1"',
     showButton: true,
     buttonText: 'Начать проверку'
   },
