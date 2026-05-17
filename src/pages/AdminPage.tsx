@@ -191,9 +191,16 @@ export default function AdminPage() {
                       selectedEmployee?.code === emp.code ? 'bg-white/5' : ''
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      {emp.photo ? (
+                        <img src={emp.photo} alt="" className="w-8 h-8 rounded-full object-cover flex-shrink-0 border border-white/10" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                          <Icon name="User" size={14} className="text-neutral-500" />
+                        </div>
+                      )}
                       <span className="font-medium text-sm truncate flex-1">{emp.name}</span>
-                      <Badge variant="outline" className={`text-[10px] ml-2 flex-shrink-0 ${STATUS_LABELS[emp.status].color}`}>
+                      <Badge variant="outline" className={`text-[10px] flex-shrink-0 ${STATUS_LABELS[emp.status].color}`}>
                         {STATUS_LABELS[emp.status].label}
                       </Badge>
                     </div>
@@ -216,10 +223,13 @@ export default function AdminPage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="max-w-2xl space-y-6"
                 >
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-5">
+                    {selectedEmployee.photo && (
+                      <img src={selectedEmployee.photo} alt="Фото" className="w-24 h-32 object-cover rounded-lg border border-white/10 flex-shrink-0" />
+                    )}
                     <div>
                       <h2 className="text-2xl font-bold">{selectedEmployee.name}</h2>
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
                         <span className="font-mono text-sm text-neutral-500">{selectedEmployee.code}</span>
                         <span className="text-neutral-600">·</span>
                         <span className="text-sm text-neutral-500">{selectedEmployee.submittedAt}</span>
